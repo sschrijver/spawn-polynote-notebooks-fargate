@@ -1,6 +1,6 @@
 vpc_id = "YOUR_VPC"
 region = "eu-west-1"
-profile_name ="LOCAL_PROFILE_NAME"
+profile_name = "LOCAL_PROFILE_NAME"
 ecs_cluster_name = "CLUSTER_NAME"
 loadbalancer_arn = "LOAD_BALANCER_ARN"
 hosted_zone_id = "HOSTED_ZONE_ID"
