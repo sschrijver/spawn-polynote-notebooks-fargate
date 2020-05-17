@@ -62,7 +62,7 @@ resource "aws_ecs_task_definition" "polynote_task_definition" {
   [
     {
         "essential": true,
-        "image": "TO_BE_REPLACED_AFTER_DEPLOY",
+        "image": "registry.hub.docker.com/sschrijver/polynote-basic-config@sha256:2451308825f1e62698069c926078bcaca3a86120edfdb728f0a38c8f9fde8a55",
         "name": "polynote",
         "portMappings": [
             {
