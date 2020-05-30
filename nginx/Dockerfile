@@ -12,8 +12,8 @@ ENV CLIENT_MAX_BODY_SIZE 1m
 ENV PROXY_READ_TIMEOUT 60s
 ENV WORKER_PROCESSES auto
 
-COPY ./files/run.sh /
-COPY ./files/nginx.conf.tmpl /
+COPY spawn-polynote-notebooks-fargate/files/run.sh /
+COPY spawn-polynote-notebooks-fargate/files/nginx.conf.tmpl /
 
 RUN chmod +x run.sh
 
