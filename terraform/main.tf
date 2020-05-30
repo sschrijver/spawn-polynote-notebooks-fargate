@@ -234,5 +234,13 @@ resource "aws_route53_record" "polynote_cname" {
 }
 
 output "url" {
-  value = "https://polynote:${random_string.password.result}@${aws_route53_record.polynote_cname.name}"
+  value = "https://${aws_route53_record.polynote_cname.name}"
+}
+
+output "username" {
+  value = "polynote"
+}
+
+output "password" {
+  value = random_string.password.result
 }
