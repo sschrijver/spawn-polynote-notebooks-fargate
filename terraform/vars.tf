@@ -10,3 +10,4 @@ variable "fargate_subnets" {
 variable "memory" {}
 variable "cpu" {}
 variable "domain" {}
+#variable "db_security_group" {}
