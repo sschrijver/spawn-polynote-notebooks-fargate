@@ -62,7 +62,7 @@ resource "aws_ecs_task_definition" "polynote_task_definition" {
   [
     {
         "essential": true,
-        "image": "registry.hub.docker.com/sschrijver/polynote-basic-config@sha256:2451308825f1e62698069c926078bcaca3a86120edfdb728f0a38c8f9fde8a55",
+        "image": "registry.hub.docker.com/sschrijver/polynote-basic-config:latest",
         "name": "polynote",
         "portMappings": [
             {
@@ -81,7 +81,7 @@ resource "aws_ecs_task_definition" "polynote_task_definition" {
     },
     {
         "essential": true,
-        "image": "quay.io/dtan4/nginx-basic-auth-proxy@sha256:c54993c41d48938d77d3f4a2cf1f04c4f60387f9ca64caefec092c4beeb51be1",
+        "image": "registry.hub.docker.com/sschrijver/polynote-nginx:latest",
         "name": "nginx",
         "dependsOn": [
             {
