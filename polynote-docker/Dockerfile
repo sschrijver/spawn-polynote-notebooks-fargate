@@ -4,6 +4,6 @@ COPY /config.yml /opt/config/config.yml
 
 RUN mkdir /opt/polynote/notebooks
 
-RUN touch /opt/polynote/notebooks/BlankNotebook.ipynb
+COPY /Blank.ipynb /opt/polynote/notebooks/Blank.ipynb
 
 CMD ["--config /opt/config/config.yml"]
