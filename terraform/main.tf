@@ -39,6 +39,47 @@ resource "aws_iam_role_policy_attachment" "policy_role_attachment" {
   policy_arn = data.aws_iam_policy.amazon_ecs_task_execution_role_policy.arn
 }
 
+// Uncomment below to access AWS resources within the polynote service
+//resource "aws_iam_role" "polynote_task_execution_role" {
+//  name = "ecsTaskRole-polynote-${random_string.random_string.result}"
+//  assume_role_policy = <<ASSUME_ROLE_POLICY
+//{
+//"Version": "2012-10-17",
+//"Statement": [
+//    {
+//      "Sid": "",
+//      "Effect": "Allow",
+//      "Principal": {
+//        "Service": "ecs-tasks.amazonaws.com"
+//      },
+//      "Action": "sts:AssumeRole"
+//    }
+//  ]
+//}
+//ASSUME_ROLE_POLICY
+//}
+//
+//# This should be revisted, since this policy will allow all actions on all resources!
+//resource "aws_iam_policy" "ecs_task_role_policy" {
+//  name = "ecsTaskRolePolicy-polynote-${random_string.random_string.result}"
+//  policy = <<POLICY
+//{
+//  "Version": "2012-10-17",
+//  "Statement": [
+//    {
+//      "Action": "*",
+//      "Effect": "Allow",
+//      "Resource": "*"
+//    }
+//  ]
+//}
+//POLICY
+//}
+//
+//resource "aws_iam_role_policy_attachment" "task_role_policy_attachment" {
+//  role = aws_iam_role.polynote_task_execution_role.name
+//  policy_arn = data.aws_iam_policy.amazon_ecs_task_execution_role_policy.arn
+//}
 
 resource "aws_cloudwatch_log_group" "polynote_ecs_log_group" {
   name = "/aws/ecs/polynote-${random_string.random_string.result}"
@@ -57,6 +98,7 @@ resource "aws_ecs_task_definition" "polynote_task_definition" {
   cpu = var.cpu
   memory = var.memory
   execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
+//  task_role_arn = aws_iam_role.polynote_task_execution_role.arn
 
   container_definitions = <<TASK_DEFINITION
   [
@@ -143,7 +185,6 @@ data "aws_lb_listener" "lb_listener" {
   port = 443
 }
 
-
 resource "aws_lb_target_group" "polynote_target_group" {
   name = "polynote-${random_string.random_string.result}"
   port = 80
@@ -155,7 +196,7 @@ resource "aws_lb_target_group" "polynote_target_group" {
   }
 }
 
-  resource "aws_security_group" "polynote_security_group" {
+resource "aws_security_group" "polynote_security_group" {
     name = "polynote_${random_string.random_string.result}"
     vpc_id = data.aws_vpc.vpc.id
 
@@ -178,7 +219,22 @@ resource "aws_lb_target_group" "polynote_target_group" {
     tags = {
       Name = "polynote_${random_string.random_string.result}"
     }
-  }
+ }
+
+// Uncomment this when you need database access
+//data "aws_security_group" "db_security_group" {
+//  id = var.db_security_group
+//}
+//
+//resource "aws_security_group_rule" "allow_connection_from_polynote_to_db" {
+//  type              = "ingress"
+//  from_port         = 3306
+//  to_port           = 3306
+//  protocol          = "tcp"
+//  source_security_group_id = aws_security_group.polynote_security_group.id
+//  security_group_id = data.aws_security_group.db_security_group.id
+//  description = "Polynote ECS Service"
+//}
 
 resource "aws_ecs_service" "polynote_service" {
   name = "polynote-${random_string.random_string.result}"
@@ -201,8 +257,6 @@ resource "aws_ecs_service" "polynote_service" {
   depends_on = [
     aws_lb_target_group.polynote_target_group]
 }
-
-
 
 resource "aws_lb_listener_rule" "polynote_lb_listener_rule" {
   listener_arn = data.aws_lb_listener.lb_listener.arn
