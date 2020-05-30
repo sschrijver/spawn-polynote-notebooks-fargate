@@ -11,3 +11,4 @@ fargate_subnets = [
 cpu = 1024
 memory = 2048
 domain = "mydomainname.com"
+#db_security_group = "SECURITY_GROUP_RDS"
